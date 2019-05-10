@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <Windows.h>
 #include "sfs.h"
 
 using namespace std;
@@ -159,7 +158,7 @@ void create(char *str,char *data){
 		strncpy(_inode_table[empty_ientry].TT,"FI",2);		// create the inode entry...first, its a directory, so DI
         int len = strlen(data);
         int cnt = 0;
-        while(len>0){
+        while(len>0 && cnt!=3){
             int blkid;
             if(cnt==0){
                 if ((blkid = getBlock())==-1) {  // first get a new block using the block bitmap
@@ -382,21 +381,17 @@ int main(){
                 char ch;
                 int in = 0;
                 scanf("%s",data);
-                /*while (true) {
-                    if(GetAsyncKeyState(VK_ESCAPE))
-                    {
-                        cout << "ESCAPE-PRESSED" << endl;
+               /* while (true) {
+                    scanf("%c",&ch);
+                    if(ch==27){
                         break;
                     }
-                    cin>>ch;
                     data[in] = ch;
                     in++;
                 }*/
-                if(strlen(data)>3072){
-                    cout<<"Please enter data less than 3 KB\n";
-                    continue;
-                }
                 create(str,data);
+                int len = strlen(data);
+                cout<<min(3072,len)<<" bytes are saved!\n";
             }
         }
         else if(cmd=="rm"){
@@ -407,6 +402,7 @@ int main(){
             }
             else{
                 rm(str,CD_INODE_ENTRY,0);
+                cout<<str<<" is removed successfully!\n";
             }
         }
         else if(cmd=="exit"){
